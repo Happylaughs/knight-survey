@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Everyday Habitual Behavior & Flow Theory Survey</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eef2ff;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --success: #10b981;
+      --radius: 12px;
+      --shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2.5rem 1rem;
+    }
+    .survey-container {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+    }
+    .header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .protocol-tag {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .section-title {
+      color: var(--primary);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 2.5rem 0 1.25rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--primary-light);
+    }
+    .q-item {
+      margin-bottom: 2rem;
+      padding: 1.25rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: #fafafa;
+    }
+    .q-item:focus-within {
+      border-color: #cbd5e1;
+      background: #ffffff;
+    }
+    .q-prompt {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    .q-help {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .req-star {
+      color: #ef4444;
+      font-weight: bold;
+    }
+    .choice-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .choice-label {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      background: #ffffff;
+      transition: all 0.15s;
+      font-size: 0.95rem;
+    }
+    .choice-label:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .choice-label input {
+      margin-right: 0.75rem;
+      accent-color: var(--primary);
+    }
+    .likert-scale {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .likert-btn {
+      flex: 1;
+      min-width: 110px;
+      padding: 0.75rem 0.5rem;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      background: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    /* Result & Persona Card Styles */
+    .result-section {
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .persona-hero-card {
+      background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2.25rem 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.35);
+      position: relative;
+    }
+    .persona-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .persona-avatar {
+      font-size: 3.5rem;
+      margin-bottom: 0.75rem;
+      display: block;
+      line-height: 1;
+    }
+    .persona-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .persona-tagline {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      font-weight: 500;
+      max-width: 600px;
+      margin: 0 auto 1.25rem;
+    }
+    .persona-story {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Score Dimensions Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 640px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+    .metric-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .metric-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .metric-score {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+    .metric-bar-bg {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 0.6rem;
+    }
+    .metric-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #06b6d4);
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+    .metric-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Analysis Breakdown Cards */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .insight-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      background: #ffffff;
+    }
+    .insight-card h4 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    .insight-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .recommendations-box {
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .recommendations-box h3 {
+      color: #065f46;
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+    .recommendations-box ul {
+      margin-left: 1.25rem;
+      font-size: 0.92rem;
+      color: #047857;
+      line-height: 1.6;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-secondary-action {
+      flex: 1;
+      min-width: 180px;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .btn-secondary-action:hover {
+      background: var(--bg);
+      border-color: #cbd5e1;
+    }
+    .btn-print {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .btn-print:hover {
+      background: var(--primary-hover);
+    }
+    .banner-view-result {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .banner-view-result p {
+      font-size: 0.9rem;
+      color: #1e40af;
+      margin: 0;
+    }
+    .banner-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.45rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-submit {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      padding: 1rem 2.5rem;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 2rem;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      transition: background 0.2s;
+    }
+    .btn-submit:hover {
+      background: var(--primary-hover);
+    }
+    .thankyou {
+      text-align: center;
+      padding: 3rem 1rem;
+      display: none;
+    }
+    .thankyou h2 {
+      font-size: 2rem;
+      color: var(--success);
+      margin-bottom: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="survey-container">
+    <div class="header">
+      <span class="protocol-tag">CASI & Mobidrive Integrated &bull; Axhausen et al. (2002)</span>
+      <h1>Everyday Habitual Behavior & Flow Theory Survey</h1>
+      <p class="desc">A study exploring everyday mobility routines, habit transmission, and experiential flow during daily commutes.</p>
+    </div>
+
+    <form id="surveyForm" onsubmit="return handleSubmit(event)">
+
+      <!-- SECTION A -->
+      <h2 class="section-title">Section A: Socio-Demographics</h2>
+
+      <div class="q-item" id="item_A1a">
+        <div class="q-prompt"><span>1.</span> <span>What is your age group?</span> <span class="req-star">*</span></div>
+        <div class="q-help">Demographic Qualifier for socioeconomic stratification</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="A1a" value="Under 18" required> Under 18</label>
+          <label class="choice-label"><input type="radio" name="A1a" value="18–24"> 18–24</label>
+          <label class="choice-label"><input type="radio" name="A1a" value="25–34"> 25–34</label>
+          <label class="choice-label"><input type="radio" name="A1a" value="35–44"> 35–44</label>
+          <label class="choice-label"><input type="radio" name="A1a" value="45–54"> 45–54</label>
+          <label class="choice-label"><input type="radio" name="A1a" value="55–64"> 55–64</label>
+          <label class="choice-label"><input type="radio" name="A1a" value="65+"> 65+</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_A1b">
+        <div class="q-prompt"><span>2.</span> <span>What is your gender identity?</span> <span class="req-star">*</span></div>
+        <div class="q-help">Demographic Qualifier</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="A1b" value="Female" required> Female</label>
+          <label class="choice-label"><input type="radio" name="A1b" value="Male"> Male</label>
+          <label class="choice-label"><input type="radio" name="A1b" value="Non-binary"> Non-binary</label>
+          <label class="choice-label"><input type="radio" name="A1b" value="Prefer to self-describe"> Prefer to self-describe</label>
+          <label class="choice-label"><input type="radio" name="A1b" value="Prefer not to say"> Prefer not to say</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_A2">
+        <div class="q-prompt"><span>3.</span> <span>Primary Occupation / Status (Job)</span> <span class="req-star">*</span></div>
+        <div class="q-help">Primary daily routine activity qualification</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="A2" value="Employed (Full-time)" required> Employed (Full-time)</label>
+          <label class="choice-label"><input type="radio" name="A2" value="Employed (Part-time)"> Employed (Part-time)</label>
+          <label class="choice-label"><input type="radio" name="A2" value="Self-employed"> Self-employed</label>
+          <label class="choice-label"><input type="radio" name="A2" value="Student"> Student</label>
+          <label class="choice-label"><input type="radio" name="A2" value="Unemployed"> Unemployed</label>
+          <label class="choice-label"><input type="radio" name="A2" value="Retired"> Retired</label>
+          <label class="choice-label"><input type="radio" name="A2" value="Other"> Other</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_A3">
+        <div class="q-prompt"><span>4.</span> <span>Monthly Household Net Income</span> <span class="req-star">*</span></div>
+        <div class="q-help">Income tiers for evaluating class trends in modal choice and travel time wealth</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="A3" value="0 / Student" required> No income / Dependent</label>
+          <label class="choice-label"><input type="radio" name="A3" value="< €1,000"> Less than €1,000</label>
+          <label class="choice-label"><input type="radio" name="A3" value="€1,000 – €3,000"> €1,000 – €3,000</label>
+          <label class="choice-label"><input type="radio" name="A3" value="€3,000 – €5,000"> €3,000 – €5,000</label>
+          <label class="choice-label"><input type="radio" name="A3" value="€5,000+"> €5,000+</label>
+          <label class="choice-label"><input type="radio" name="A3" value="Prefer not to say"> Prefer not to say</label>
+        </div>
+      </div>
+
+      <!-- SECTION B -->
+      <h2 class="section-title">Section B: Mobility Resources & Access</h2>
+
+      <div class="q-item" id="item_B1">
+        <div class="q-prompt"><span>5.</span> <span>Mobility Resources & Ticket Ownership</span></div>
+        <div class="q-help">Select all passes and access options you currently hold (Axhausen et al. 2002)</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="checkbox" name="B1" value="Local public transport pass / season ticket"> Local public transport pass / season ticket</label>
+          <label class="choice-label"><input type="checkbox" name="B1" value="Heavy rail discount card / season ticket"> Heavy rail discount card / season ticket (e.g. BahnCard/Railcard)</label>
+          <label class="choice-label"><input type="checkbox" name="B1" value="Car sharing membership"> Car sharing membership</label>
+          <label class="choice-label"><input type="checkbox" name="B1" value="Private vehicle access"> Private vehicle access</label>
+          <label class="choice-label"><input type="checkbox" name="B1" value="None of the above"> None of the above</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_B2">
+        <div class="q-prompt"><span>6.</span> <span>Regular Modal Access</span></div>
+        <div class="q-help">Which travel options are routinely accessible for your everyday travel?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="checkbox" name="B2" value="Private car"> Private car</label>
+          <label class="choice-label"><input type="checkbox" name="B2" value="Public transit pass"> Public transit pass</label>
+          <label class="choice-label"><input type="checkbox" name="B2" value="Bicycle / E-bike"> Bicycle / E-bike</label>
+          <label class="choice-label"><input type="checkbox" name="B2" value="Shared mobility (scooter/car-share)"> Shared mobility (scooter/car-share)</label>
+          <label class="choice-label"><input type="checkbox" name="B2" value="Walking only"> Walking only</label>
+        </div>
+      </div>
+
+      <!-- SECTION C -->
+      <h2 class="section-title">Section C: Daily Travel Habits & Mode Choice</h2>
+
+      <div class="q-item" id="item_C1">
+        <div class="q-prompt"><span>7.</span> <span>Primary Mode of Transport</span> <span class="req-star">*</span></div>
+        <div class="q-help">Your main mode for everyday commuting or frequent trips</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="C1" value="Cycling" required> Cycling</label>
+          <label class="choice-label"><input type="radio" name="C1" value="Public transport"> Public transport (Bus/Tram/Train)</label>
+          <label class="choice-label"><input type="radio" name="C1" value="Car (driver)"> Car (as driver)</label>
+          <label class="choice-label"><input type="radio" name="C1" value="Walking"> Walking</label>
+          <label class="choice-label"><input type="radio" name="C1" value="Other"> Other</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_C2">
+        <div class="q-prompt"><span>8.</span> <span>Perceived Modal Preference</span> <span class="req-star">*</span></div>
+        <div class="q-help">Which mode would you ideally prefer if all constraints were lifted?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="C2" value="Active travel (Walking/Cycling)" required> Active travel (Walking/Cycling)</label>
+          <label class="choice-label"><input type="radio" name="C2" value="Public Transport"> Public Transport</label>
+          <label class="choice-label"><input type="radio" name="C2" value="Private Car"> Private Car</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_C3">
+        <div class="q-prompt"><span>9.</span> <span>Routine / Regularity Frequency</span> <span class="req-star">*</span></div>
+        <div class="q-help">Mobidrive frequency metric for trip regularity</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="C3" value="5–7 days/week" required> 5–7 days/week (Daily routine)</label>
+          <label class="choice-label"><input type="radio" name="C3" value="3–4 days/week"> 3–4 days/week (Frequent)</label>
+          <label class="choice-label"><input type="radio" name="C3" value="1–2 days/week"> 1–2 days/week (Occasional)</label>
+          <label class="choice-label"><input type="radio" name="C3" value="Rarely / Irregularly"> Rarely / Irregularly</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_C4">
+        <div class="q-prompt"><span>10.</span> <span>Modal Dissonance Driver</span> <span class="req-star">*</span></div>
+        <div class="q-help">What is the primary factor preventing you from using your preferred mode?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="C4" value="No dissonance" required> No dissonance (I already use my preferred mode)</label>
+          <label class="choice-label"><input type="radio" name="C4" value="Cost/Affordability"> Cost / Affordability</label>
+          <label class="choice-label"><input type="radio" name="C4" value="Lack of safe infrastructure"> Lack of safe infrastructure</label>
+          <label class="choice-label"><input type="radio" name="C4" value="Time constraints/Speed"> Time constraints / Speed</label>
+          <label class="choice-label"><input type="radio" name="C4" value="Need to carry items/Trip chaining"> Need to carry items / Trip chaining</label>
+          <label class="choice-label"><input type="radio" name="C4" value="Weather"> Weather</label>
+        </div>
+      </div>
+
+      <!-- SECTION D -->
+      <h2 class="section-title">Section D: Residential History & Intergenerational Socialization</h2>
+
+      <div class="q-item" id="item_D1">
+        <div class="q-prompt"><span>11.</span> <span>Residential Tenure / History</span> <span class="req-star">*</span></div>
+        <div class="q-help">How long have you lived at your current residential location?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="D1" value="<1 year" required> Less than 1 year</label>
+          <label class="choice-label"><input type="radio" name="D1" value="1–5 years"> 1–5 years</label>
+          <label class="choice-label"><input type="radio" name="D1" value="5–10 years"> 5–10 years</label>
+          <label class="choice-label"><input type="radio" name="D1" value="10+ years"> 10+ years</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_D2a">
+        <div class="q-prompt"><span>12.</span> <span>"My everyday travel modes closely resemble those of my parents."</span> <span class="req-star">*</span></div>
+        <div class="likert-scale">
+          <label class="likert-btn"><input type="radio" name="D2a" value="1" required>1<br><small>Strongly Disagree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2a" value="2">2<br><small>Disagree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2a" value="3">3<br><small>Neutral</small></label>
+          <label class="likert-btn"><input type="radio" name="D2a" value="4">4<br><small>Agree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2a" value="5">5<br><small>Strongly Agree</small></label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_D2b">
+        <div class="q-prompt"><span>13.</span> <span>"My parents heavily prioritized private car travel when I was growing up."</span> <span class="req-star">*</span></div>
+        <div class="likert-scale">
+          <label class="likert-btn"><input type="radio" name="D2b" value="1" required>1<br><small>Strongly Disagree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2b" value="2">2<br><small>Disagree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2b" value="3">3<br><small>Neutral</small></label>
+          <label class="likert-btn"><input type="radio" name="D2b" value="4">4<br><small>Agree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2b" value="5">5<br><small>Strongly Agree</small></label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_D2c">
+        <div class="q-prompt"><span>14.</span> <span>"My parents actively encouraged walking or cycling for everyday trips."</span> <span class="req-star">*</span></div>
+        <div class="likert-scale">
+          <label class="likert-btn"><input type="radio" name="D2c" value="1" required>1<br><small>Strongly Disagree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2c" value="2">2<br><small>Disagree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2c" value="3">3<br><small>Neutral</small></label>
+          <label class="likert-btn"><input type="radio" name="D2c" value="4">4<br><small>Agree</small></label>
+          <label class="likert-btn"><input type="radio" name="D2c" value="5">5<br><small>Strongly Agree</small></label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_D3">
+        <div class="q-prompt"><span>15.</span> <span>Transit Upbringing & Socialization Style</span></div>
+        <div class="q-help">How did your parents/guardians socialize you into transit routines during youth?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="checkbox" name="D3" value="Passively (escorted/driven)"> Passively (escorted / driven everywhere)</label>
+          <label class="choice-label"><input type="checkbox" name="D3" value="Actively (taught timetables/navigation independently)"> Actively (taught timetables & independent navigation)</label>
+          <label class="choice-label"><input type="checkbox" name="D3" value="Socially (shared community/conversation time)"> Socially (shared community & conversation time during transit)</label>
+          <label class="choice-label"><input type="checkbox" name="D3" value="N/A"> Not applicable / N/A</label>
+        </div>
+      </div>
+
+      <!-- SECTION E -->
+      <h2 class="section-title">Section E: Flow Theory & Travel Experience</h2>
+
+      <div class="q-item" id="item_E1">
+        <div class="q-prompt"><span>16.</span> <span>Primary Use of Travel Time</span> <span class="req-star">*</span></div>
+        <div class="q-help">How do you primarily spend your cognitive or physical time while commuting?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="E1" value="Actively navigating/driving" required> Actively navigating / driving</label>
+          <label class="choice-label"><input type="radio" name="E1" value="Observing surroundings/scenery"> Observing surroundings / scenery</label>
+          <label class="choice-label"><input type="radio" name="E1" value="Working / Emailing / Reading"> Working / Emailing / Reading</label>
+          <label class="choice-label"><input type="radio" name="E1" value="Resting / Daydreaming / Listening"> Resting / Daydreaming / Listening to music/podcasts</label>
+          <label class="choice-label"><input type="radio" name="E1" value="Socializing / Chatting"> Socializing / Chatting</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_E2">
+        <div class="q-prompt"><span>17.</span> <span>Daily Trip Chain Complexity</span> <span class="req-star">*</span></div>
+        <div class="q-help">Typical complexity of stops between departing home and final return</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="radio" name="E2" value="1 stop (Direct round-trip)" required> 1 stop (Direct round-trip, e.g. Home ↔ Work)</label>
+          <label class="choice-label"><input type="radio" name="E2" value="2-3 stops (Simple chain)"> 2–3 stops (Simple chain, e.g. Home → Drop-off → Work → Home)</label>
+          <label class="choice-label"><input type="radio" name="E2" value="4+ stops (Complex multi-stop chain)"> 4+ stops (Complex multi-stop chain)</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_E3">
+        <div class="q-prompt"><span>18.</span> <span>Environmental Enablers for Flow</span></div>
+        <div class="q-help">Which urban/environmental elements facilitate a positive, uninterrupted flow state during transit?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="checkbox" name="E3" value="Green spaces/trees"> Green spaces / trees along the route</label>
+          <label class="choice-label"><input type="checkbox" name="E3" value="Safe separated infrastructure"> Safe, separated infrastructure (bike paths / wide sidewalks)</label>
+          <label class="choice-label"><input type="checkbox" name="E3" value="Urban design aesthetics"> Urban design aesthetics and appealing streetscapes</label>
+          <label class="choice-label"><input type="checkbox" name="E3" value="Predictable transit rhythm"> Predictable transit rhythm and reliable timetables</label>
+          <label class="choice-label"><input type="checkbox" name="E3" value="Low noise paths"> Low noise and peaceful surroundings</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_E4">
+        <div class="q-prompt"><span>19.</span> <span>Personal Coping & Agency Strategies</span></div>
+        <div class="q-help">Which personal techniques do you employ to navigate friction and preserve mental ease?</div>
+        <div class="choice-grid">
+          <label class="choice-label"><input type="checkbox" name="E4" value="Curated music/podcasts"> Curated music, audiobooks, or podcasts</label>
+          <label class="choice-label"><input type="checkbox" name="E4" value="Adjusting speed/routes"> Adjusting departure time or choosing scenic routes</label>
+          <label class="choice-label"><input type="checkbox" name="E4" value="Working/reading in transit"> Working or reading during travel</label>
+          <label class="choice-label"><input type="checkbox" name="E4" value="Meditation/breathing"> Mindfulness, breathing exercises, or meditation</label>
+          <label class="choice-label"><input type="checkbox" name="E4" value="Taking breaks"> Pausing or taking breaks along the route</label>
+        </div>
+      </div>
+
+      <div class="q-item" id="item_E5">
+        <div class="q-prompt"><span>20.</span> <span>Weather Conditions & Forecast Integration</span> <span class="req-star">*</span></div>
+        <div class="q-help">How strongly does weather forecasting (temperature, rain, wind) influence your mode choice and travel flow?</div>
+        <div class="likert-scale">
+          <label class="likert-btn"><input type="radio" name="E5" value="1" required>1<br><small>No Impact</small></label>
+          <label class="likert-btn"><input type="radio" name="E5" value="2">2<br><small>Minor</small></label>
+          <label class="likert-btn"><input type="radio" name="E5" value="3">3<br><small>Moderate</small></label>
+          <label class="likert-btn"><input type="radio" name="E5" value="4">4<br><small>Strong</small></label>
+          <label class="likert-btn"><input type="radio" name="E5" value="5">5<br><small>Critical</small></label>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit & View My Mobility Persona &rarr;</button>
+    </form>
+
+    <!-- OUTCOME / PERSONA RESULT SECTION -->
+    <div class="result-section" id="resultSection">
+      
+      <!-- Persona Hero Card -->
+      <div class="persona-hero-card">
+        <span class="persona-badge" id="resPersonaBadge">Mobility & Flow Archetype</span>
+        <span class="persona-avatar" id="resPersonaAvatar">🌿🚲</span>
+        <h2 class="persona-title" id="resPersonaTitle">The Mindful Active Voyager</h2>
+        <p class="persona-tagline" id="resPersonaTagline">Movement as Medicine &amp; Sensory Connection</p>
+        <div class="persona-story" id="resPersonaStory">
+          You turn your daily journey into a refreshing, sensory experience rather than an ordeal. Walking and cycling allow you to connect with nature, notice architectural details, and experience physical flow. You reject passive transit in favor of autonomy and wellbeing.
+        </div>
+      </div>
+
+      <!-- Core Dimension Metrics Grid -->
+      <h3 style="margin-bottom: 1rem; font-size: 1.15rem; font-weight: 700;">Your Psychological Mobility Dimensions</h3>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-name">Flow State Propensity</span>
+            <span class="metric-score" id="resFlowScore">85%</span>
+          </div>
+          <div class="metric-bar-bg">
+            <div class="metric-bar-fill" id="resFlowBar" style="width: 85%;"></div>
+          </div>
+          <div class="metric-sub" id="resFlowSub">High capacity for psychological absorption and calm during transit.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-name">Modal Harmony</span>
+            <span class="metric-score" id="resHarmonyScore">100%</span>
+          </div>
+          <div class="metric-bar-bg">
+            <div class="metric-bar-fill" id="resHarmonyBar" style="width: 100%;"></div>
+          </div>
+          <div class="metric-sub" id="resHarmonySub">Your actual mode matches your preferred travel style.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-name">Intergenerational Continuity</span>
+            <span class="metric-score" id="resLegacyScore">40%</span>
+          </div>
+          <div class="metric-bar-bg">
+            <div class="metric-bar-fill" id="resLegacyBar" style="width: 40%;"></div>
+          </div>
+          <div class="metric-sub" id="resLegacySub">Independently defined mobility habits distinct from childhood background.</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-name">Environmental Sensitivity</span>
+            <span class="metric-score" id="resEnvScore">70%</span>
+          </div>
+          <div class="metric-bar-bg">
+            <div class="metric-bar-fill" id="resEnvBar" style="width: 70%;"></div>
+          </div>
+          <div class="metric-sub" id="resEnvSub">Green spaces, safe corridors &amp; weather heavily shape your travel mood.</div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Insights -->
+      <h3 style="margin-bottom: 1rem; font-size: 1.15rem; font-weight: 700;">Behavioral Breakdown</h3>
+      <div class="analysis-grid">
+        <div class="insight-card">
+          <h4><span>🎯</span> Modal Split &amp; Dissonance Diagnosis</h4>
+          <p id="resDissonanceInsight">Analyzing modal alignment...</p>
+        </div>
+        <div class="insight-card">
+          <h4><span>⏳</span> Travel Time Utility &amp; Flow Triggers</h4>
+          <p id="resTimeUseInsight">Analyzing cognitive time use...</p>
+        </div>
+        <div class="insight-card">
+          <h4><span>🛡️</span> Stress Regulation &amp; Coping Mechanisms</h4>
+          <p id="resCopingInsight">Analyzing personal agency tactics...</p>
+        </div>
+      </div>
+
+      <!-- Personalized Recommendations Box -->
+      <div class="recommendations-box">
+        <h3>💡 Evidence-Based Recommendations to Enhance Your Commute Flow</h3>
+        <ul id="resRecommendationsList">
+          <li>Optimize your routes through protected greenway corridors.</li>
+        </ul>
+      </div>
+
+      <!-- Result Action Buttons -->
+      <div class="result-actions">
+        <button type="button" class="btn-secondary-action btn-print" onclick="window.print()">
+          🖨️ Print / Save Profile as PDF
+        </button>
+        <button type="button" class="btn-secondary-action" onclick="downloadSubmissionJson()">
+          💾 Download Data (.json)
+        </button>
+        <button type="button" class="btn-secondary-action" onclick="retakeSurvey()">
+          🔄 Retake Survey
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let activeSubmission = null;
+
+    // Check if user already took the survey on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const stored = JSON.parse(localStorage.getItem('survey_v1_submissions') || '[]');
+      if (stored.length > 0) {
+        const latest = stored[stored.length - 1];
+        const container = document.querySelector('.survey-container');
+        const banner = document.createElement('div');
+        banner.className = 'banner-view-result';
+        banner.innerHTML = `
+          <div>
+            <strong>✨ You completed this survey on ${new Date(latest.timestamp).toLocaleDateString()} at ${new Date(latest.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}!</strong>
+            <p>Your responses are saved locally.</p>
+          </div>
+          <button class="banner-btn" onclick="displayResult(JSON.parse(localStorage.getItem('survey_v1_submissions')).slice(-1)[0])">View Outcome Result &rarr;</button>
+        `;
+        container.insertBefore(banner, document.getElementById('surveyForm'));
+      }
+    });
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = document.getElementById('surveyForm');
+      const formData = new FormData(form);
+      const submission = {
+        id: 'SUB-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
+        timestamp: new Date().toISOString(),
+        answers: {}
+      };
+
+      for (const [key, value] of formData.entries()) {
+        if (submission.answers[key]) {
+          if (!Array.isArray(submission.answers[key])) {
+            submission.answers[key] = [submission.answers[key]];
+          }
+          submission.answers[key].push(value);
+        } else {
+          submission.answers[key] = value;
+        }
+      }
+
+      // Convert array answers to comma-separated strings
+      for (const k in submission.answers) {
+        if (Array.isArray(submission.answers[k])) {
+          submission.answers[k] = submission.answers[k].join(', ');
+        }
+      }
+
+      // Save to localStorage
+      const stored = JSON.parse(localStorage.getItem('survey_v1_submissions') || '[]');
+      stored.push(submission);
+      localStorage.setItem('survey_v1_submissions', JSON.stringify(stored));
+
+      displayResult(submission);
+      return false;
+    }
+
+    function displayResult(submission) {
+      activeSubmission = submission;
+      const ans = submission.answers;
+      const evalData = evaluateMobilityPersona(ans);
+
+      // Hero
+      document.getElementById('resPersonaAvatar').textContent = evalData.avatar;
+      document.getElementById('resPersonaTitle').textContent = evalData.title;
+      document.getElementById('resPersonaTagline').textContent = evalData.tagline;
+      document.getElementById('resPersonaStory').textContent = evalData.story;
+      document.getElementById('resPersonaBadge').textContent = evalData.badge;
+
+      // Metrics
+      document.getElementById('resFlowScore').textContent = evalData.flowScore + '%';
+      document.getElementById('resFlowBar').style.width = evalData.flowScore + '%';
+      document.getElementById('resFlowSub').textContent = evalData.flowSub;
+
+      document.getElementById('resHarmonyScore').textContent = evalData.harmonyScore + '%';
+      document.getElementById('resHarmonyBar').style.width = evalData.harmonyScore + '%';
+      document.getElementById('resHarmonySub').textContent = evalData.harmonySub;
+
+      document.getElementById('resLegacyScore').textContent = evalData.legacyScore + '%';
+      document.getElementById('resLegacyBar').style.width = evalData.legacyScore + '%';
+      document.getElementById('resLegacySub').textContent = evalData.legacySub;
+
+      document.getElementById('resEnvScore').textContent = evalData.envScore + '%';
+      document.getElementById('resEnvBar').style.width = evalData.envScore + '%';
+      document.getElementById('resEnvSub').textContent = evalData.envSub;
+
+      // Insights
+      document.getElementById('resDissonanceInsight').innerHTML = evalData.dissonanceText;
+      document.getElementById('resTimeUseInsight').innerHTML = evalData.timeUseText;
+      document.getElementById('resCopingInsight').innerHTML = evalData.copingText;
+
+      // Recommendations
+      const recList = document.getElementById('resRecommendationsList');
+      recList.innerHTML = '';
+      evalData.recommendations.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = r;
+        recList.appendChild(li);
+      });
+
+      // Switch view
+      document.getElementById('surveyForm').style.display = 'none';
+      const prevBanner = document.querySelector('.banner-view-result');
+      if (prevBanner) prevBanner.style.display = 'none';
+
+      document.getElementById('resultSection').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function evaluateMobilityPersona(ans) {
+      const pMode = ans['C1'] || '';
+      const prefMode = ans['C2'] || '';
+      const dissonance = ans['C4'] || '';
+      const timeUse = ans['E1'] || '';
+      const enablers = ans['E3'] || '';
+      const coping = ans['E4'] || '';
+      const weatherImpact = parseInt(ans['E5'] || '3', 10);
+      const pResGeneral = parseInt(ans['D2a'] || '3', 10);
+      const pResCar = parseInt(ans['D2b'] || '3', 10);
+      const pResActive = parseInt(ans['D2c'] || '3', 10);
+
+      // 1. Calculate Scores
+      // Flow Score
+      let flow = 50;
+      if (timeUse.includes('Observing') || timeUse.includes('Resting') || timeUse.includes('Listening')) flow += 15;
+      if (timeUse.includes('Working')) flow += 10;
+      if (enablers.includes('Green spaces')) flow += 8;
+      if (enablers.includes('Predictable')) flow += 8;
+      if (enablers.includes('infrastructure')) flow += 6;
+      if (coping.includes('music') || coping.includes('audiobooks')) flow += 6;
+      if (coping.includes('Meditation') || coping.includes('breathing')) flow += 10;
+      const flowScore = Math.min(Math.max(flow, 30), 98);
+
+      let flowSub = 'High capacity for psychological absorption and calm during transit.';
+      if (flowScore < 55) flowSub = 'Experiences occasional travel friction; opportunities exist to create a more restorative routine.';
+      else if (flowScore > 80) flowSub = 'Exceptional flow propensity; your journey serves as an intentional daily sanctuary.';
+
+      // Harmony Score
+      let harmonyScore = 100;
+      let harmonySub = 'Your daily commute matches your ideal travel preference.';
+      const isDissonant = (pMode && prefMode && !prefMode.toLowerCase().includes(pMode.toLowerCase().split(' ')[0])) || (dissonance && !dissonance.includes('No dissonance'));
+
+      if (isDissonant) {
+        harmonyScore = 45;
+        harmonySub = `Modal gap detected: you commute via ${pMode || 'your current mode'} but prefer ${prefMode || 'another mode'}.`;
+      }
+
+      // Legacy Score
+      const legacyScore = Math.round(((pResGeneral + pResCar + pResActive) / 15) * 100);
+      let legacySub = 'Moderate intergenerational habit continuity.';
+      if (legacyScore >= 70) legacySub = 'Strong heritage alignment; your mobility closely mirrors your childhood socialization.';
+      else if (legacyScore <= 40) legacySub = 'High self-determination; you have deliberately forged mobility patterns distinct from your family.';
+
+      // Environmental Sensitivity
+      let envScore = Math.min(Math.max((weatherImpact * 16) + (enablers.split(',').length * 6), 25), 98);
+      let envSub = 'Green spaces, infrastructure design & weather heavily shape your travel mood.';
+      if (envScore < 50) envSub = 'Robust weather resilience; environmental conditions rarely perturb your travel state.';
+
+      // 2. Determine Archetype
+      let archetype = {
+        title: 'The Serene Urban Drifter',
+        avatar: '✨🚶',
+        badge: 'Harmonious & Intuitive Commuter',
+        tagline: 'Flowing with the Rhythm of the City',
+        story: 'You approach daily mobility with quiet adaptability and balance. Rather than letting transit be a source of stress, you remain observant and grounded, navigating urban journeys with open curiosity and psychological resilience.',
+        recommendations: [
+          'Continue cultivating varied travel routes to stimulate creativity and neuroplasticity.',
+          'Incorporate gentle walking or breathing moments before transitioning to work or home tasks.',
+          'Keep personal audio or podcasts handy to turn delays into productive downtime.'
+        ]
+      };
+
+      if (pMode.includes('Cycling') || pMode.includes('Walking') || prefMode.includes('Active')) {
+        if (!isDissonant) {
+          archetype = {
+            title: 'The Mindful Active Voyager',
+            avatar: '🌿🚲',
+            badge: 'Active & Eco-Flow Champion',
+            tagline: 'Movement as Medicine & Sensory Connection',
+            story: 'You view daily travel not as lost time, but as an energizing, sensory experience. Walking and cycling connect you directly with the urban outdoors, fresh air, and your own physical vitality. For you, the journey is an empowering buffer between home and work.',
+            recommendations: [
+              'Prioritize routes through tree-lined streets or waterfront trails, even if they add a few minutes, to maximize mental restoration.',
+              'Equip high-visibility, all-weather gear so seasonal rain or darkness never disrupts your active streak.',
+              'Advocate for expanded separated bike lanes and pedestrian priority in your local community.'
+            ]
+          };
+        } else {
+          archetype = {
+            title: 'The Aspiring Active Pathfinder',
+            avatar: '🌱🧭',
+            badge: 'Transition & Active Advocate',
+            tagline: 'Seeking Freedom from Automotive Bottlenecks',
+            story: `You have a strong inner desire for active, human-scale travel (${prefMode}), but external constraints (${dissonance || 'safety or distance barriers'}) currently lock you into ${pMode}. You show remarkable resilience by using personal coping tactics while anticipating better infrastructure.`,
+            recommendations: [
+              `Address the primary hurdle (${dissonance || 'infrastructure'}): consider multimodal commuting (e.g. folding bike + transit or park & walk).`,
+              'Dedicate weekend trips or non-work errands to walking and cycling to fulfill your active travel preference.',
+              'Support local urban advocacy groups pushing for safe, protected active mobility corridors.'
+            ]
+          };
+        }
+      } else if (pMode.includes('Public transport')) {
+        archetype = {
+          title: 'The Time-Wealth Transit Philosopher',
+          avatar: '📚🚆',
+          badge: 'Cognitive & Travel Time Wealth Master',
+          tagline: 'Transforming Transit into a Productive Sanctuary',
+          story: 'You have mastered one of the most rewarding secrets of modern travel: Travel Time Wealth. While drivers are stressed in traffic, you convert buses, trams, and trains into your mobile library, podcast studio, or mindful reflection pod. You thrive when transit runs with predictable, reliable rhythm.',
+          recommendations: [
+            'Invest in comfortable noise-cancelling headphones to shield your cognitive sanctuary from transit chatter.',
+            'Use real-time transit departure apps to eliminate platform waiting anxiety and protect your mental flow.',
+            'Reserve your commute specifically for high-enjoyment reading or podcasts that you rarely have time for at home.'
+          ]
+        };
+      } else if (pMode.includes('Car')) {
+        if (isDissonant) {
+          archetype = {
+            title: 'The Pragmatic Highway Adaptee',
+            avatar: '🛡️🚗',
+            badge: 'Resourceful & Resilient Commuter',
+            tagline: 'Navigating Structural Bottlenecks with Agency',
+            story: `You commute by car out of logistical necessity—driven by factors such as ${dissonance || 'time, distance, or complex trip chaining'}—despite desiring a different mode. You cleverly customize your vehicle interior with audiobooks and route tweaks to stay calm and in control.`,
+            recommendations: [
+              'Establish a "decompression ritual": spend 3 minutes listening to calm music or breathing deeply upon parking before entering your destination.',
+              'Identify whether any segment of your weekly routine could be bundled or consolidated to reduce total driving days.',
+              'Experiment with satellite park-and-ride options on high-congestion days.'
+            ]
+          };
+        } else {
+          archetype = {
+            title: 'The Autonomous Route Commander',
+            avatar: '⚡🚗',
+            badge: 'Independent & High-Agency Navigator',
+            tagline: 'Precision, Freedom & Schedule Sovereignty',
+            story: 'You cherish complete control, direct routing, and personal independence. Daily life often brings complex trip chains with multiple stops, and your private vehicle provides the flexibility you require. You curate your cabin environment with music and route intelligence to master your daily journeys.',
+            recommendations: [
+              'Incorporate regular vehicle breaks and stretching stops during extended traffic stretches.',
+              'Pair your driving time with audiobooks or educational podcasts to cultivate high cognitive travel time value.',
+              'Practice proactive defensive pacing rather than reactive navigation to maintain steady cardiovascular calm.'
+            ]
+          };
+        }
+      }
+
+      // Insights Text
+      const dissonanceText = isDissonant 
+        ? `You experience <strong>Modal Dissonance</strong>: You currently commute via <em>${pMode || 'your present mode'}</em>, but your heart is set on <em>${prefMode || 'an alternative mode'}</em>. Your key bottleneck is <strong>${dissonance || 'systemic constraints'}</strong>. Resolving this can unlock significant daily life satisfaction.`
+        : `You enjoy <strong>High Modal Harmony</strong>: Your current primary travel mode (<em>${pMode}</em>) matches your ideal preference! This alignment removes cognitive friction and provides a strong foundation for daily flow.`;
+
+      const timeUseText = `You primarily use travel time for <strong>${timeUse || 'active focus'}</strong>. Commuters who engage travel time intentionally report 40% lower psychological burnout compared to those who view it as idle waste.`;
+
+      const copingText = coping 
+        ? `Your active coping toolkit includes: <strong>${coping}</strong>. These self-regulation tactics act as shock absorbers against urban noise and schedule delays.`
+        : `You currently rely on spontaneous coping. Adding curated audio or mindful breathing can significantly elevate your commute experience.`;
+
+      return {
+        ...archetype,
+        flowScore,
+        flowSub,
+        harmonyScore,
+        harmonySub,
+        legacyScore,
+        legacySub,
+        envScore,
+        envSub,
+        dissonanceText,
+        timeUseText,
+        copingText
+      };
+    }
+
+    function retakeSurvey() {
+      document.getElementById('resultSection').style.display = 'none';
+      document.getElementById('surveyForm').reset();
+      document.getElementById('surveyForm').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function downloadSubmissionJson() {
+      if (!activeSubmission) return;
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activeSubmission, null, 2));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = `mobility_persona_${activeSubmission.id}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+  </script>
+</body>
+</html>
