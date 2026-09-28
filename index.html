@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel to Interactive Survey Studio</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Local SheetJS library -->
+  <script src="xlsx.full.min.js"></script>
+</head>
+<body class="theme-indigo">
+  <!-- Application Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">SurveyCraft</h1>
+          <p class="brand-subtitle">Excel to Interactive Survey Converter</p>
+        </div>
+      </div>
+
+      <!-- Navigation Steps -->
+      <nav class="step-nav" id="stepNav">
+        <button class="step-btn active" data-step="1">
+          <span class="step-num">1</span>
+          <span class="step-label">Import File</span>
+        </button>
+        <button class="step-btn" data-step="2" disabled>
+          <span class="step-num">2</span>
+          <span class="step-label">Map Columns</span>
+        </button>
+        <button class="step-btn" data-step="3" disabled>
+          <span class="step-num">3</span>
+          <span class="step-label">Edit Questions</span>
+        </button>
+        <button class="step-btn" data-step="4" disabled>
+          <span class="step-num">4</span>
+          <span class="step-label">Preview & Take</span>
+        </button>
+        <button class="step-btn" data-step="5" disabled>
+          <span class="step-num">5</span>
+          <span class="step-label">Responses & Export</span>
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="btn btn-ghost btn-icon" title="Toggle Theme">
+          <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="main-content">
+
+    <!-- STEP 1: IMPORT FILE -->
+    <section id="step1" class="step-panel active">
+      <div class="panel-header text-center">
+        <h2>Turn Your Excel Questions into an Interactive Survey</h2>
+        <p class="text-muted">Upload an Excel (.xlsx, .xls) or CSV sheet. SurveyCraft will analyze columns and build a modern, responsive survey.</p>
+      </div>
+
+      <!-- Quick Action: Uploaded Survey_v1.1 detected -->
+      <div class="card mb-4" id="uploadedSurveyBanner" style="border-left: 4px solid var(--success); background: var(--bg-card); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+        <div class="flex-center gap-3">
+          <div style="background: var(--success-light); color: var(--success); width: 44px; height: 44px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div>
+            <h3 style="margin-bottom: 0.2rem; font-size: 1.1rem;">Found Uploaded File: <code>Survey_v1.1.xlsx</code></h3>
+            <p class="text-muted text-sm">Everyday Habitual Behavior &amp; Flow Theory Survey &bull; 5 Sections &bull; R-Ready Variable Coding</p>
+          </div>
+        </div>
+        <button id="loadUploadedSurveyBtn" class="btn btn-success">
+          ⚡ Open Survey_v1.1 Now &rarr;
+        </button>
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-content">
+          <div class="drop-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <h3>Drag and drop your Excel sheet here</h3>
+          <p class="text-muted">Supports .xlsx, .xls, and .csv files</p>
+          <div class="btn-group">
+            <label class="btn btn-primary cursor-pointer">
+              <span>Browse Files</span>
+              <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" hidden>
+            </label>
+            <button id="loadSampleBtn" class="btn btn-secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+              </svg>
+              Load Sample Survey Template
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Guidance & Template Download -->
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-header">
+            <span class="badge">Flexible Formats</span>
+            <h4>Any Sheet Structure Works</h4>
+          </div>
+          <p>Whether your Excel file has just questions in one column, or detailed columns for Question, Type, Choices, and Section &mdash; our smart detector maps it smoothly.</p>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <span class="badge badge-accent">Sample Available</span>
+            <h4>Need a template?</h4>
+          </div>
+          <p>You can download our sample Excel template with pre-filled questions, rating scales, and multiple-choice options.</p>
+          <button id="downloadSampleTemplateBtn" class="btn btn-sm btn-outline mt-2">
+            Download Excel Template (.xlsx)
+          </button>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <span class="badge badge-success">100% Private & Local</span>
+            <h4>Runs in your browser</h4>
+          </div>
+          <p>Your spreadsheet data stays completely local on your machine. No accounts, external servers, or API keys required.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: MAP COLUMNS & PREVIEW RAW DATA -->
+    <section id="step2" class="step-panel">
+      <div class="panel-header">
+        <div class="flex-between">
+          <div>
+            <h2>Map Excel Columns to Survey Fields</h2>
+            <p class="text-muted" id="fileMetaText">Detected 0 rows and 0 columns.</p>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="app.goToStep(1)">Back</button>
+            <button class="btn btn-primary" id="confirmMappingBtn">Apply & Build Survey &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-sheet selector if multiple sheets exist -->
+      <div class="sheet-selector-card card" id="sheetSelectorRow" style="display: none;">
+        <label for="sheetSelect" class="form-label font-bold">Select Sheet:</label>
+        <select id="sheetSelect" class="form-select"></select>
+      </div>
+
+      <div class="mapping-container">
+        <!-- Mapping Controls Card -->
+        <div class="card mapping-card">
+          <h3 class="card-title">Column Mapping</h3>
+          <p class="card-desc">Assign your sheet columns to survey attributes. We've auto-detected best matches!</p>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="mapQuestion" class="form-label required">Question Text Column</label>
+              <select id="mapQuestion" class="form-select"></select>
+              <span class="field-hint">The main question or prompt text.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="mapType" class="form-label">Question Type Column</label>
+              <select id="mapType" class="form-select"></select>
+              <span class="field-hint">E.g., Multiple Choice, Rating, Text, Checkboxes. (Optional)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="mapOptions" class="form-label">Options / Choices Column</label>
+              <select id="mapOptions" class="form-select"></select>
+              <span class="field-hint">Comma, semicolon, or newline separated answers. (Optional)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="mapSection" class="form-label">Category / Section Column</label>
+              <select id="mapSection" class="form-select"></select>
+              <span class="field-hint">Group questions into steps or categories. (Optional)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="mapHelp" class="form-label">Description / Subtext Column</label>
+              <select id="mapHelp" class="form-select"></select>
+              <span class="field-hint">Additional guidance or instructions. (Optional)</span>
+            </div>
+
+            <div class="form-group">
+              <label for="mapRequired" class="form-label">Required Flag Column</label>
+              <select id="mapRequired" class="form-select"></select>
+              <span class="field-hint">Indicates if answer is mandatory (Yes/No or True/False). (Optional)</span>
+            </div>
+          </div>
+
+          <!-- Fallback defaults for missing columns -->
+          <div class="default-settings-box">
+            <h4>Default Fallbacks (when not specified in sheet)</h4>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label for="defaultTypeSelect" class="form-label">Default Question Type:</label>
+                <select id="defaultTypeSelect" class="form-select">
+                  <option value="single">Single Choice (Radio Buttons)</option>
+                  <option value="multi">Multiple Choice (Checkboxes)</option>
+                  <option value="text" selected>Text Answer (Short text)</option>
+                  <option value="textarea">Long Answer (Paragraph)</option>
+                  <option value="rating">Rating (1 to 5 Stars / Scale)</option>
+                  <option value="likert">Likert Scale (Strongly Disagree to Agree)</option>
+                </select>
+              </div>
+              <div class="form-group col-6">
+                <label class="form-label">Default Required:</label>
+                <div class="checkbox-inline">
+                  <label><input type="checkbox" id="defaultRequiredCheck"> Make questions required by default</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Raw Sheet Data Preview Table -->
+        <div class="card preview-card">
+          <div class="flex-between">
+            <h3 class="card-title">Sheet Data Preview (First 5 Rows)</h3>
+            <span class="badge" id="previewRowsCount">5 rows</span>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table" id="rawPreviewTable">
+              <thead id="rawPreviewThead"></thead>
+              <tbody id="rawPreviewTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: CUSTOMIZE & EDIT QUESTIONS -->
+    <section id="step3" class="step-panel">
+      <div class="panel-header">
+        <div class="flex-between">
+          <div>
+            <h2>Review & Customize Survey Questions</h2>
+            <p class="text-muted">Fine-tune questions, adjust types, reorder, or add new questions before sharing.</p>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="app.goToStep(2)">Back</button>
+            <button class="btn btn-secondary" id="addNewQuestionBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Question
+            </button>
+            <button class="btn btn-primary" onclick="app.goToStep(4)">Proceed to Live Survey &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Survey Settings Bar -->
+      <div class="card survey-meta-card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="surveyTitleInput" class="form-label font-bold">Survey Title</label>
+            <input type="text" id="surveyTitleInput" class="form-input" placeholder="e.g. Employee Engagement Survey 2026">
+          </div>
+          <div class="form-group">
+            <label for="surveyDescInput" class="form-label font-bold">Survey Subtitle / Introduction</label>
+            <input type="text" id="surveyDescInput" class="form-input" placeholder="e.g. Please take 3 minutes to share your valuable thoughts.">
+          </div>
+          <div class="form-group">
+            <label for="surveyModeSelect" class="form-label font-bold">Display Layout Style</label>
+            <select id="surveyModeSelect" class="form-select">
+              <option value="card" selected>Interactive Card Mode (One-at-a-time, Typeform style)</option>
+              <option value="sections">Section-by-Section Accordion Mode</option>
+              <option value="all">Classic Single-Page Form</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Questions List -->
+      <div class="questions-list-container">
+        <div class="flex-between mb-3">
+          <div class="font-bold"><span id="questionsCountBadge">0</span> questions in survey</div>
+          <div class="text-muted text-sm">Drag or click up/down arrows to reorder</div>
+        </div>
+        <div id="questionsContainer" class="questions-container">
+          <!-- Dynamic Question Cards populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: INTERACTIVE SURVEY RUNNER (PREVIEW & TEST) -->
+    <section id="step4" class="step-panel">
+      <div class="survey-runner-toolbar">
+        <div class="flex-between">
+          <div class="flex-center gap-2">
+            <button class="btn btn-sm btn-secondary" onclick="app.goToStep(3)">&larr; Edit Survey</button>
+            <span class="runner-badge">Live Interactive Mode</span>
+          </div>
+          <div class="flex-center gap-2">
+            <button class="btn btn-sm btn-outline" id="resetSurveyBtn">Reset Answers</button>
+            <button class="btn btn-sm btn-primary" onclick="app.goToStep(5)">View Submissions & Export &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Survey Runner Viewport -->
+      <div class="survey-runner-wrapper" id="surveyRunnerWrapper">
+        <div class="survey-container card" id="surveyCard">
+          <!-- Survey Progress Header -->
+          <div class="survey-header">
+            <div class="survey-progress-bar-container">
+              <div class="survey-progress-bar" id="surveyProgressBar" style="width: 0%;"></div>
+            </div>
+            <div class="survey-header-meta flex-between">
+              <span id="surveyProgressLabel" class="text-sm text-muted">Question 1 of 10</span>
+              <span id="surveyProgressPercent" class="text-sm font-bold">0% Completed</span>
+            </div>
+            <h2 id="runnerSurveyTitle" class="runner-title">Survey Title</h2>
+            <p id="runnerSurveyDesc" class="runner-desc text-muted">Survey description here</p>
+          </div>
+
+          <!-- Dynamic Questions Area -->
+          <form id="surveyForm" onsubmit="return false;">
+            <div id="surveyQuestionsArea" class="survey-questions-area">
+              <!-- Dynamically rendered based on active view mode -->
+            </div>
+
+            <!-- Survey Navigation Controls (for Card & Section Mode) -->
+            <div class="survey-nav-footer flex-between" id="surveyNavFooter">
+              <button type="button" class="btn btn-secondary" id="surveyPrevBtn" style="display: none;">
+                &larr; Previous
+              </button>
+              <div class="ml-auto flex-center gap-2">
+                <button type="button" class="btn btn-primary" id="surveyNextBtn">
+                  Next &rarr;
+                </button>
+                <button type="button" class="btn btn-success" id="surveySubmitBtn" style="display: none;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Submit Survey
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Thank You Screen -->
+          <div id="surveyThankYou" class="survey-thankyou text-center" style="display: none;">
+            <div class="success-icon">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <h2>Thank You!</h2>
+            <p class="text-muted">Your response has been successfully recorded locally.</p>
+            <div class="btn-group justify-center mt-4">
+              <button class="btn btn-outline" id="retakeSurveyBtn">Take Survey Again</button>
+              <button class="btn btn-primary" onclick="app.goToStep(5)">View All Responses &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: RESPONSES, EXPORT & SHARE -->
+    <section id="step5" class="step-panel">
+      <div class="panel-header">
+        <div class="flex-between">
+          <div>
+            <h2>Survey Responses & Export Options</h2>
+            <p class="text-muted">Review collected submissions, download data, or export this survey as a standalone web page.</p>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="app.goToStep(4)">&larr; Back to Survey</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Export Action Cards -->
+      <div class="export-grid">
+        <div class="export-card card">
+          <div class="export-card-icon excel-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="8" y1="13" x2="16" y2="17"></line>
+              <line x1="16" y1="13" x2="8" y2="17"></line>
+            </svg>
+          </div>
+          <div class="export-card-body">
+            <h3>Export Responses to Excel</h3>
+            <p class="text-muted">Download all submitted entries as a clean, structured spreadsheet (.xlsx).</p>
+            <button class="btn btn-primary btn-sm" id="exportResponsesXlsxBtn">
+              Download Responses (.xlsx)
+            </button>
+          </div>
+        </div>
+
+        <div class="export-card card">
+          <div class="export-card-icon web-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <div class="export-card-body">
+            <h3>Standalone Single-File Web Survey</h3>
+            <p class="text-muted">Generate a standalone HTML file with your survey embedded. Can be emailed or hosted anywhere!</p>
+            <button class="btn btn-outline btn-sm" id="exportStandaloneHtmlBtn">
+              Download Standalone Survey (.html)
+            </button>
+          </div>
+        </div>
+
+        <div class="export-card card">
+          <div class="export-card-icon excel-icon" style="background: #e0f2fe; color: #0369a1;">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 20V10"></path>
+              <path d="M18 20V4"></path>
+              <path d="M6 20v-4"></path>
+            </svg>
+          </div>
+          <div class="export-card-body">
+            <h3>R-Ready Statistical Dataset</h3>
+            <p class="text-muted">Export with variable codes matching Sheet 2 (Ordinal Likert 1-5, binary dummy indicators).</p>
+            <button class="btn btn-primary btn-sm" id="exportRReadyBtn">
+              Download R Dataset (.xlsx)
+            </button>
+          </div>
+        </div>
+
+        <div class="export-card card">
+          <div class="export-card-icon json-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+          </div>
+          <div class="export-card-body">
+            <h3>Export Survey Definition (JSON)</h3>
+            <p class="text-muted">Download the survey schema with all questions, choices, and logic in JSON format.</p>
+            <button class="btn btn-outline btn-sm" id="exportSurveyJsonBtn">
+              Download Survey (.json)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submissions Table Card -->
+      <div class="card mt-4">
+        <div class="flex-between mb-3">
+          <div class="flex-center gap-2">
+            <h3 class="card-title mb-0">Recorded Responses</h3>
+            <span class="badge badge-accent" id="responsesCountBadge">0 submissions</span>
+          </div>
+          <button class="btn btn-danger btn-sm" id="clearResponsesBtn">Clear All Responses</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table" id="responsesTable">
+            <thead id="responsesThead"></thead>
+            <tbody id="responsesTbody">
+              <tr>
+                <td colspan="4" class="text-center text-muted py-4">No submissions recorded yet. Take the survey in Step 4 to test!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-inner flex-between text-muted text-sm">
+      <span>SurveyCraft &bull; Local Excel-to-Survey Studio</span>
+      <span>Workspace: <code>C:\Users\Hayley\.gemini\antigravity\scratch\survey-app</code></span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
